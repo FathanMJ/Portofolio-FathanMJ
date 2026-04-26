@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV | Fathan Mutohirul Janan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="theme-dark">
+    <div class="preloader" id="preloader">
+      <div class="loader-ring"></div>
+      <p>Loading Portfolio CV...</p>
+    </div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <canvas id="three-canvas"></canvas>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-grid"></div>
+
+    <header class="hero section" id="hero">
+      <nav class="top-nav">
+        <span class="brand">FMJ</span>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#tentang">Tentang</a></li>
+          <li><a href="#sertifikat">Sertifikat</a></li>
+          <li><a href="#keahlian">Keahlian</a></li>
+          <li><a href="#tools">Tools</a></li>
+          <li><a href="#proyek">Proyek</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+      </nav>
+
+      <div class="hero-content">
+        <div class="hero-layout">
+          <div class="hero-text">
+            <p class="chip anim-item">Available for Internship</p>
+            <h1 class="anim-item">Fathan Mutohirul Janan</h1>
+            <p class="subtitle anim-item">
+              Frontend Developer • Backend Developer • Mobile Developer
+            </p>
+            <p class="description anim-item">
+              Mahasiswa aktif Rekayasa Perangkat Lunak yang berfokus pada pengembangan
+              aplikasi web dan mobile end-to-end. Siap berkontribusi di tim profesional
+              dengan semangat belajar tinggi dan eksekusi cepat.
+            </p>
+            <div class="cta anim-item">
+              <a class="btn primary" href="#kontak">Hubungi Saya</a>
+              <a class="btn ghost" href="#proyek">Lihat Proyek</a>
+            </div>
+          </div>
+          <div class="hero-photo-wrap anim-item">
+            <img
+              class="hero-photo"
+              src="./assets/profile.png"
+              alt="Foto Fathan Mutohirul Janan"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section reveal" id="tentang">
+        <h2>Tentang Saya</h2>
+        <div class="card">
+          <p>
+            Saya memiliki ketertarikan kuat pada frontend, backend, dan mobile development.
+            Berpengalaman membangun aplikasi lintas platform menggunakan teknologi modern
+            serta integrasi API eksternal untuk menghadirkan pengalaman pengguna yang
+            interaktif, cepat, dan stabil.
+          </p>
+          <div class="info-grid">
+            <div><span>Tempat/Tanggal Lahir</span><strong>Subang, 20 Desember 2004</strong></div>
+            <div><span>Alamat</span><strong>Bendungan, Pagaden Barat, Subang</strong></div>
+            <div><span>Pendidikan</span><strong>Politeknik Negeri Subang (2023 - Sekarang)</strong></div>
+            <div><span>Sertifikasi</span><strong>Junior Web Programmer - LSPTIK</strong></div>
+            <div><span>Email</span><strong>fathanmutohirul@gmail.com</strong></div>
+            <div><span>Telepon</span><strong>+62 895-3530-57241</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="sertifikat">
+        <h2>Sertifikat</h2>
+        <div class="cert-grid">
+          <a class="cert-card" href="./assets/sertifikat-lsptik-2.png" target="_blank" rel="noreferrer">
+            <img src="./assets/sertifikat-lsptik-2.png" alt="Sertifikat Kompetensi - Junior Web Programmer (LSPTIK/BNSP)" loading="lazy" />
+            <div class="cert-meta">
+              <p class="cert-title">Sertifikat Kompetensi</p>
+              <p class="cert-subtitle">Junior Web Programmer — LSPTIK / BNSP</p>
+            </div>
+          </a>
+          <a class="cert-card" href="./assets/sertifikat-lsptik-1.png" target="_blank" rel="noreferrer">
+            <img src="./assets/sertifikat-lsptik-1.png" alt="Daftar Unit Kompetensi - Junior Web Programmer" loading="lazy" />
+            <div class="cert-meta">
+              <p class="cert-title">Daftar Unit Kompetensi</p>
+              <p class="cert-subtitle">Okupasi Junior Web Programmer</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section reveal" id="pendidikan">
+        <h2>Riwayat Pendidikan</h2>
+        <div class="grid-2">
+          <article class="card">
+            <h3>Politeknik Negeri Subang</h3>
+            <p class="stack">2023 - Sekarang</p>
+            <p>Jurusan Teknologi Informasi dan Komputer, Program Studi Rekayasa Perangkat Lunak.</p>
+          </article>
+          <article class="card">
+            <h3>SMA Negeri 2 Subang</h3>
+            <p class="stack">2020 - 2023</p>
+            <p>Peminatan umum, aktif dalam kegiatan belajar berbasis proyek dan kolaborasi tim.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="keahlian">
+        <h2>Keahlian Teknis</h2>
+        <div class="skill-list">
+          <div class="skill"><span>Frontend (HTML, CSS, JavaScript, React Native)</span><div class="bar"><div data-level="92"></div></div></div>
+          <div class="skill"><span>Backend (PHP, Laravel, REST API, MySQL)</span><div class="bar"><div data-level="88"></div></div></div>
+          <div class="skill"><span>Mobile (Flutter, Dart, React Native)</span><div class="bar"><div data-level="90"></div></div></div>
+          <div class="skill"><span>Integrasi API (Midtrans, RajaOngkir, RESTful)</span><div class="bar"><div data-level="86"></div></div></div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="tools">
+        <h2>Tools & Teknologi</h2>
+        <div class="tools-groups">
+          <div class="tools-group">
+            <button class="tools-accordion" type="button" aria-expanded="false" aria-controls="tools-langs-panel">
+              <span class="tools-title">Bahasa Pemrograman</span>
+              <span class="tools-chevron" aria-hidden="true"></span>
+            </button>
+            <div class="tools-panel" id="tools-langs-panel">
+              <div class="tech-grid">
+                <article class="tech-card featured">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+                  <p>JavaScript</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" />
+                  <p>PHP</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
+                  <p>Python</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart" />
+                  <p>Dart</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="tools-group">
+            <button class="tools-accordion" type="button" aria-expanded="false" aria-controls="tools-frameworks-panel">
+              <span class="tools-title">Framework / Platform</span>
+              <span class="tools-chevron" aria-hidden="true"></span>
+            </button>
+            <div class="tools-panel" id="tools-frameworks-panel">
+              <div class="tech-grid">
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" />
+                  <p>Laravel</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Native" />
+                  <p>React Native</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" />
+                  <p>Flutter</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" />
+                  <p>MySQL</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <div class="tools-group">
+            <button class="tools-accordion" type="button" aria-expanded="false" aria-controls="tools-apps-panel">
+              <span class="tools-title">Tools / Apps</span>
+              <span class="tools-chevron" aria-hidden="true"></span>
+            </button>
+            <div class="tools-panel" id="tools-apps-panel">
+              <div class="tech-grid">
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" />
+                  <p>Git</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" />
+                  <p>GitHub</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" />
+                  <p>VS Code</p>
+                </article>
+                <article class="tech-card">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" />
+                  <p>Figma</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="proyek">
+        <h2>Proyek Pilihan</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./assets/kedai-ranggawulung.png" alt="Kedai Ranggawulung - Preview" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <h3>Kedai Ranggawulung</h3>
+              <p class="stack">PHP • Laravel • JavaScript</p>
+              <p class="project-desc">
+                Website pemesanan makanan dengan alur pemesanan, manajemen menu, dan tampilan responsif untuk berbagai perangkat.
+              </p>
+              <div class="project-actions">
+                <a class="btn ghost" href="https://github.com/FathanMJ/Kedai-Ranggawulung" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./assets/mooz-order.png" alt="Mooz Order - Preview" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <h3>Mooz Order</h3>
+              <p class="stack">React Native • Midtrans API • JavaScript</p>
+              <p class="project-desc">
+                Aplikasi mobile pemesanan dengan UI clean, integrasi payment gateway Midtrans, dan koneksi ke endpoint backend.
+              </p>
+              <div class="project-actions">
+                <a class="btn ghost" href="https://github.com/FathanMJ/Mooz-Order" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./assets/slemn24.png" alt="Slemn24 Mobile - Preview" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <h3>Slemn24 Mobile</h3>
+              <p class="stack">Flutter • Dart • RajaOngkir API</p>
+              <p class="project-desc">
+                Aplikasi mobile dengan pengalaman pengguna modern, perhitungan ongkir real-time via RajaOngkir, serta navigasi yang efisien.
+              </p>
+              <div class="project-actions">
+                <a class="btn ghost" href="https://github.com/FathanMJ/Slemn24-Mobile" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="organisasi">
+        <h2>Organisasi & Soft Skill</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>HIMATIKOM Polsub</h3>
+            <p>Anggota pengurus (2023 - 2024), aktif dalam koordinasi program kerja, komunikasi internal, dan pelaksanaan kegiatan himpunan.</p>
+          </div>
+          <div class="card">
+            <h3>Keterampilan Lunak</h3>
+            <p>Komunikasi efektif, teamwork, disiplin, inisiatif tinggi, adaptif terhadap teknologi baru, dan bertanggung jawab.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="kontak">
+        <h2>Kontak</h2>
+        <div class="grid-2">
+          <div class="contact card">
+            <a href="tel:+62895353057241">+62 895-3530-57241</a>
+            <a href="mailto:fathanmutohirul@gmail.com">fathanmutohirul@gmail.com</a>
+            <a href="https://github.com/FathanMJ" target="_blank" rel="noreferrer">github.com/FathanMJ</a>
+          </div>
+
+          <form class="card contact-form" id="contact-form">
+            <div class="form-row">
+              <label for="name">Nama</label>
+              <input id="name" name="name" type="text" placeholder="Nama kamu" required />
+            </div>
+            <div class="form-row">
+              <label for="fromEmail">Email</label>
+              <input id="fromEmail" name="fromEmail" type="email" placeholder="email@contoh.com" required />
+            </div>
+            <div class="form-row">
+              <label for="message">Pesan</label>
+              <textarea id="message" name="message" rows="5" placeholder="Tulis pesan kamu..." required></textarea>
+            </div>
+            <div class="form-actions">
+              <button class="btn primary" type="submit">Kirim Pesan</button>
+              <p class="form-hint">Pesan akan dibuka lewat aplikasi Email kamu (Gmail/Outlook).</p>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Fathan Mutohirul Janan</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="./script.js"></script>
+    <script type="module" src="./three-bg.js"></script>
+  </body>
+</html>
