@@ -94,14 +94,14 @@
       <section class="section reveal" id="sertifikat">
         <h2>Sertifikat</h2>
         <div class="cert-grid">
-          <a class="cert-card" href="./assets/sertifikat-lsptik-2.png" target="_blank" rel="noreferrer">
+          <a class="cert-card" href="./assets/sertifikat-lsptik-2.png" data-cert-image="./assets/sertifikat-lsptik-2.png" data-cert-title="Sertifikat Kompetensi" target="_blank" rel="noreferrer">
             <img src="./assets/sertifikat-lsptik-2.png" alt="Sertifikat Kompetensi - Junior Web Programmer (LSPTIK/BNSP)" loading="lazy" />
             <div class="cert-meta">
               <p class="cert-title">Sertifikat Kompetensi</p>
               <p class="cert-subtitle">Junior Web Programmer — LSPTIK / BNSP</p>
             </div>
           </a>
-          <a class="cert-card" href="./assets/sertifikat-lsptik-1.png" target="_blank" rel="noreferrer">
+          <a class="cert-card" href="./assets/sertifikat-lsptik-1.png" data-cert-image="./assets/sertifikat-lsptik-1.png" data-cert-title="Daftar Unit Kompetensi" target="_blank" rel="noreferrer">
             <img src="./assets/sertifikat-lsptik-1.png" alt="Daftar Unit Kompetensi - Junior Web Programmer" loading="lazy" />
             <div class="cert-meta">
               <p class="cert-title">Daftar Unit Kompetensi</p>
@@ -299,7 +299,7 @@
             <a href="https://github.com/FathanMJ" target="_blank" rel="noreferrer">github.com/FathanMJ</a>
           </div>
 
-          <form class="card contact-form" id="contact-form">
+          <form class="card contact-form" id="contact-form" method="post" action="https://formsubmit.co/ajax/fathanmutohirul@gmail.com">
             <div class="form-row">
               <label for="name">Nama</label>
               <input id="name" name="name" type="text" placeholder="Nama kamu" required />
@@ -312,14 +312,27 @@
               <label for="message">Pesan</label>
               <textarea id="message" name="message" rows="5" placeholder="Tulis pesan kamu..." required></textarea>
             </div>
+            <input type="hidden" name="_subject" value="CV Contact Message" />
+            <input type="hidden" name="_captcha" value="false" />
             <div class="form-actions">
               <button class="btn primary" type="submit">Kirim Pesan</button>
-              <p class="form-hint">Pesan akan dibuka lewat aplikasi Email kamu (Gmail/Outlook).</p>
+              <p class="form-hint" id="form-hint">Pesan akan dikirim langsung ke email saya.</p>
             </div>
           </form>
         </div>
       </section>
     </main>
+
+    <div class="cert-modal" id="cert-modal" aria-hidden="true">
+      <div class="cert-modal-backdrop" data-close-cert></div>
+      <div class="cert-modal-content" role="dialog" aria-modal="true" aria-label="Preview Sertifikat">
+        <div class="cert-modal-header">
+          <p class="cert-modal-title" id="cert-modal-title">Sertifikat</p>
+          <button class="btn ghost cert-back-btn" id="cert-back-btn" type="button">Kembali</button>
+        </div>
+        <img id="cert-modal-image" src="" alt="Preview Sertifikat" />
+      </div>
+    </div>
 
     <footer>
       <p>© 2026 Fathan Mutohirul Janan</p>

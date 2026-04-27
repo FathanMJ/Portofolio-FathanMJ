@@ -46,7 +46,8 @@ if (!canvas || prefersReducedMotion) {
   group.add(knot);
 
   // Star/particle field
-  const starCount = 700;
+  const isSmallScreen = window.innerWidth < 900;
+  const starCount = isSmallScreen ? 360 : 560;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(starCount * 3);
   for (let i = 0; i < starCount; i += 1) {
@@ -66,7 +67,7 @@ if (!canvas || prefersReducedMotion) {
   group.add(stars);
 
   // Constellation lines (dynamic)
-  const maxConnections = 260;
+  const maxConnections = isSmallScreen ? 140 : 220;
   const linePos = new Float32Array(maxConnections * 2 * 3);
   const lineGeo = new THREE.BufferGeometry();
   lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
@@ -113,6 +114,7 @@ if (!canvas || prefersReducedMotion) {
   window.addEventListener("resize", resize, { passive: true });
 
   const clock = new THREE.Clock();
+  let frameTick = 0;
   function animate() {
     const t = clock.getElapsedTime();
 
@@ -130,37 +132,40 @@ if (!canvas || prefersReducedMotion) {
     }
     posAttr.needsUpdate = true;
 
-    // Build constellation connections (nearest within threshold)
-    const threshold = 1.85;
-    let c = 0;
-    for (let i = 0; i < starCount && c < maxConnections; i += 1) {
-      const i3 = i * 3;
-      const ax = a[i3];
-      const ay = a[i3 + 1];
-      const az = a[i3 + 2];
-      for (let j = i + 1; j < starCount && c < maxConnections; j += 1) {
-        const j3 = j * 3;
-        const bx = a[j3];
-        const by = a[j3 + 1];
-        const bz = a[j3 + 2];
-        const dx = ax - bx;
-        const dy = ay - by;
-        const dz = az - bz;
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (dist < threshold) {
-          const k = c * 2 * 3;
-          linePos[k] = ax;
-          linePos[k + 1] = ay;
-          linePos[k + 2] = az;
-          linePos[k + 3] = bx;
-          linePos[k + 4] = by;
-          linePos[k + 5] = bz;
-          c += 1;
+    // Build constellation connections every 2 frames for performance
+    frameTick += 1;
+    if (frameTick % 2 === 0) {
+      const threshold = isSmallScreen ? 1.72 : 1.82;
+      let c = 0;
+      for (let i = 0; i < starCount && c < maxConnections; i += 1) {
+        const i3 = i * 3;
+        const ax = a[i3];
+        const ay = a[i3 + 1];
+        const az = a[i3 + 2];
+        for (let j = i + 1; j < starCount && c < maxConnections; j += 1) {
+          const j3 = j * 3;
+          const bx = a[j3];
+          const by = a[j3 + 1];
+          const bz = a[j3 + 2];
+          const dx = ax - bx;
+          const dy = ay - by;
+          const dz = az - bz;
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (dist < threshold) {
+            const k = c * 2 * 3;
+            linePos[k] = ax;
+            linePos[k + 1] = ay;
+            linePos[k + 2] = az;
+            linePos[k + 3] = bx;
+            linePos[k + 4] = by;
+            linePos[k + 5] = bz;
+            c += 1;
+          }
         }
       }
+      lineGeo.setDrawRange(0, c * 2);
+      lineGeo.attributes.position.needsUpdate = true;
     }
-    lineGeo.setDrawRange(0, c * 2);
-    lineGeo.attributes.position.needsUpdate = true;
 
     group.rotation.y += 0.0018;
     group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, targetY, 0.05);

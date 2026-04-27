@@ -9,6 +9,12 @@ const contactForm = document.getElementById("contact-form");
 const navToggle = document.getElementById("nav-toggle");
 const navLinks = document.getElementById("nav-links");
 const toolsAccordions = document.querySelectorAll(".tools-accordion");
+const certCards = document.querySelectorAll(".cert-card");
+const certModal = document.getElementById("cert-modal");
+const certModalImage = document.getElementById("cert-modal-image");
+const certModalTitle = document.getElementById("cert-modal-title");
+const certBackBtn = document.getElementById("cert-back-btn");
+const formHint = document.getElementById("form-hint");
 
 anime({
   targets: ".loader-ring",
@@ -210,21 +216,135 @@ const observer = new IntersectionObserver(
 revealSections.forEach((section) => observer.observe(section));
 
 if (contactForm) {
-  contactForm.addEventListener("submit", (e) => {
+  contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const name = document.getElementById("name")?.value?.trim() || "";
     const fromEmail = document.getElementById("fromEmail")?.value?.trim() || "";
     const message = document.getElementById("message")?.value?.trim() || "";
+    const submitButton = contactForm.querySelector('button[type="submit"]');
 
-    const to = "fathanmutohirul@gmail.com";
-    const subject = `CV Contact — ${name || "Visitor"}`;
-    const body = `Nama: ${name}\nEmail: ${fromEmail}\n\nPesan:\n${message}\n`;
+    if (!name || !fromEmail || !message) return;
 
-    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    if (submitButton) submitButton.disabled = true;
+    if (formHint) {
+      formHint.textContent = "Mengirim pesan...";
+      formHint.classList.remove("success", "error");
+    }
 
-    window.location.href = mailto;
+    try {
+      const formData = new FormData(contactForm);
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Failed to send");
+
+      if (formHint) {
+        formHint.textContent = "Pesan berhasil dikirim. Terima kasih!";
+        formHint.classList.add("success");
+      }
+      contactForm.reset();
+    } catch (error) {
+      const to = "fathanmutohirul@gmail.com";
+      const subject = `CV Contact — ${name || "Visitor"}`;
+      const body = `Nama: ${name}\nEmail: ${fromEmail}\n\nPesan:\n${message}\n`;
+      const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      if (formHint) {
+        formHint.textContent = "Gagal kirim otomatis, saya buka email app sebagai cadangan.";
+        formHint.classList.add("error");
+      }
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+}
+
+if (certModal && certModalImage && certModalTitle && certBackBtn && certCards.length) {
+  const certModalContent = certModal.querySelector(".cert-modal-content");
+  let isClosingCertModal = false;
+
+  const closeCertModal = () => {
+    if (isClosingCertModal || !certModal.classList.contains("open")) return;
+    isClosingCertModal = true;
+
+    if (certModalContent) {
+      anime({
+        targets: certModalContent,
+        scale: [1, 0.95],
+        opacity: [1, 0],
+        duration: 180,
+        easing: "easeInQuad",
+      });
+    }
+    anime({
+      targets: certModalImage,
+      scale: [1, 0.98],
+      opacity: [1, 0.1],
+      duration: 170,
+      easing: "easeInQuad",
+    });
+
+    setTimeout(() => {
+      isClosingCertModal = false;
+      if (certModalContent) {
+        certModalContent.style.transform = "";
+        certModalContent.style.opacity = "";
+      }
+      certModalImage.style.transform = "";
+      certModalImage.style.opacity = "";
+      certModal.classList.remove("open");
+      certModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }, 190);
+  };
+
+  const openCertModal = (img, title) => {
+    if (!img) return;
+    certModalImage.src = img;
+    certModalTitle.textContent = title || "Sertifikat";
+    certModal.classList.add("open");
+    certModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    if (certModalContent) {
+      anime({
+        targets: certModalContent,
+        scale: [0.92, 1],
+        opacity: [0, 1],
+        duration: 260,
+        easing: "easeOutCubic",
+      });
+    }
+    anime({
+      targets: certModalImage,
+      scale: [0.96, 1],
+      opacity: [0.4, 1],
+      duration: 320,
+      delay: 40,
+      easing: "easeOutExpo",
+    });
+  };
+
+  certCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      const img = card.getAttribute("data-cert-image") || card.getAttribute("href");
+      const title = card.getAttribute("data-cert-title") || "Sertifikat";
+      openCertModal(img, title);
+    });
+  });
+
+  certBackBtn.addEventListener("click", closeCertModal);
+  certModal.querySelectorAll("[data-close-cert]").forEach((el) => {
+    el.addEventListener("click", closeCertModal);
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeCertModal();
   });
 }

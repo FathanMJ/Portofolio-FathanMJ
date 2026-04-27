@@ -600,6 +600,68 @@ h2 {
   box-shadow: 0 0 22px rgba(75, 187, 255, 0.18);
 }
 
+.cert-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.cert-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cert-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 8, 20, 0.75);
+  backdrop-filter: blur(5px);
+}
+
+.cert-modal-content {
+  position: relative;
+  width: min(900px, 92vw);
+  max-height: 86vh;
+  overflow: auto;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 14px;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.cert-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.cert-modal-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.cert-back-btn {
+  padding: 8px 14px;
+}
+
+#cert-modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: block;
+  will-change: transform, opacity;
+}
+
 .contact-form input,
 .contact-form textarea {
   width: 100%;
@@ -634,6 +696,14 @@ h2 {
   margin: 10px 0 0;
   color: var(--muted);
   font-size: 12px;
+}
+
+.form-hint.success {
+  color: #58d68d;
+}
+
+.form-hint.error {
+  color: #ff8aa6;
 }
 
 body.theme-light .project-media::after {
