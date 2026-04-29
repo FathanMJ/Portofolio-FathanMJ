@@ -559,6 +559,12 @@ h2 {
   gap: 16px;
 }
 
+.cert-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
 .cert-card {
   text-decoration: none;
   color: inherit;
@@ -876,12 +882,22 @@ body.theme-light::after {
 
 @media (max-width: 768px) {
   .hero-layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 
   .hero-photo-wrap {
-    justify-self: start;
-    width: min(280px, 82%);
+    order: -1;
+    justify-self: auto;
+    width: clamp(180px, 44vw, 240px);
+    margin: 0 auto 4px;
+    align-self: center;
+  }
+
+  .hero-photo {
+    aspect-ratio: 3 / 4;
   }
 
   /* nav is handled by .nav-links on mobile */
