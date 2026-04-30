@@ -37,24 +37,24 @@ if (!canvas || prefersReducedMotion) {
   const amb = new THREE.AmbientLight(0xffffff, 0.25);
   scene.add(amb);
 
-  const knotGeo = new THREE.TorusKnotGeometry(
-    1.25,
-    0.42,
-    quality === "high" ? 150 : 110,
-    quality === "high" ? 14 : 10
-  );
-  const knotMat = new THREE.MeshStandardMaterial({
-    color: 0x9fb9ff,
-    roughness: 0.35,
-    metalness: 0.75,
-    emissive: 0x0b1a3d,
-    emissiveIntensity: 0.55,
-  });
-  const knot = new THREE.Mesh(knotGeo, knotMat);
-  knot.position.set(2.6, 1.2, -1.2);
-  group.add(knot);
+  // 3D object is the heaviest part; keep it only on high quality
+  let knot = null;
+  let knotMat = null;
+  if (quality === "high") {
+    const knotGeo = new THREE.TorusKnotGeometry(1.25, 0.42, 120, 12);
+    knotMat = new THREE.MeshStandardMaterial({
+      color: 0x9fb9ff,
+      roughness: 0.38,
+      metalness: 0.72,
+      emissive: 0x0b1a3d,
+      emissiveIntensity: 0.55,
+    });
+    knot = new THREE.Mesh(knotGeo, knotMat);
+    knot.position.set(2.6, 1.2, -1.2);
+    group.add(knot);
+  }
 
-  const starCount = quality === "high" ? 320 : 200;
+  const starCount = quality === "high" ? 240 : 140;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(starCount * 3);
   for (let i = 0; i < starCount; i += 1) {
@@ -73,7 +73,7 @@ if (!canvas || prefersReducedMotion) {
   const stars = new THREE.Points(starGeo, starMat);
   group.add(stars);
 
-  const frontStarCount = quality === "high" ? 90 : 55;
+  const frontStarCount = quality === "high" ? 60 : 34;
   const frontGeo = new THREE.BufferGeometry();
   const frontPos = new Float32Array(frontStarCount * 3);
   const frontDrift = new Float32Array(frontStarCount * 2);
@@ -98,7 +98,7 @@ if (!canvas || prefersReducedMotion) {
   const frontStars = new THREE.Points(frontGeo, frontStarMat);
   group.add(frontStars);
 
-  const maxFrontConnections = quality === "high" ? 90 : 55;
+  const maxFrontConnections = quality === "high" ? 55 : 28;
   const frontLinePos = new Float32Array(maxFrontConnections * 2 * 3);
   const frontLineGeo = new THREE.BufferGeometry();
   frontLineGeo.setAttribute("position", new THREE.BufferAttribute(frontLinePos, 3));
@@ -112,7 +112,7 @@ if (!canvas || prefersReducedMotion) {
   const frontLines = new THREE.LineSegments(frontLineGeo, frontLineMat);
   group.add(frontLines);
 
-  const maxConnections = quality === "high" ? 140 : 80;
+  const maxConnections = quality === "high" ? 90 : 40;
   const linePos = new Float32Array(maxConnections * 2 * 3);
   const lineGeo = new THREE.BufferGeometry();
   lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
@@ -212,9 +212,9 @@ if (!canvas || prefersReducedMotion) {
     fa.needsUpdate = true;
 
     frameTick += 1;
-    const stride = quality === "high" ? 3 : 5;
+    const stride = quality === "high" ? 5 : 8;
     if (frameTick % stride === 0) {
-      const threshold = quality === "high" ? 1.78 : 1.72;
+      const threshold = quality === "high" ? 1.7 : 1.62;
       const thresholdSq = threshold * threshold;
       let c = 0;
       for (let i = 0; i < starCount && c < maxConnections; i += 1) {
@@ -246,7 +246,7 @@ if (!canvas || prefersReducedMotion) {
       lineGeo.setDrawRange(0, c * 2);
       lineGeo.attributes.position.needsUpdate = true;
 
-      const threshFront = quality === "high" ? 2.32 : 2.18;
+      const threshFront = quality === "high" ? 2.05 : 1.9;
       const threshFrontSq = threshFront * threshFront;
       let cf = 0;
       for (let i = 0; i < frontStarCount && cf < maxFrontConnections; i += 1) {
@@ -280,9 +280,11 @@ if (!canvas || prefersReducedMotion) {
     group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, targetY, 0.05);
     group.rotation.y = THREE.MathUtils.lerp(group.rotation.y, t * 0.08 + targetX, 0.03);
 
-    knot.rotation.x = t * 0.25;
-    knot.rotation.y = t * 0.33;
-    knot.rotation.z = t * 0.18;
+    if (knot) {
+      knot.rotation.x = t * 0.25;
+      knot.rotation.y = t * 0.33;
+      knot.rotation.z = t * 0.18;
+    }
 
     renderer.render(scene, camera);
     rafId = requestAnimationFrame(animate);
@@ -296,8 +298,10 @@ if (!canvas || prefersReducedMotion) {
     frontStarMat.opacity = isLight ? 0.45 : 0.94;
     lineMat.opacity = isLight ? 0.12 : 0.22;
     frontLineMat.opacity = isLight ? 0.28 : 0.52;
-    knotMat.emissiveIntensity = isLight ? 0.25 : 0.55;
-    knotMat.color.setHex(isLight ? 0x2f6de0 : 0x9fb9ff);
+    if (knotMat) {
+      knotMat.emissiveIntensity = isLight ? 0.25 : 0.55;
+      knotMat.color.setHex(isLight ? 0x2f6de0 : 0x9fb9ff);
+    }
   });
   observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 }
