@@ -54,7 +54,6 @@ if (!canvas || prefersReducedMotion) {
   knot.position.set(2.6, 1.2, -1.2);
   group.add(knot);
 
-  // Star/particle field
   const starCount = quality === "high" ? 320 : 200;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(starCount * 3);
@@ -74,7 +73,6 @@ if (!canvas || prefersReducedMotion) {
   const stars = new THREE.Points(starGeo, starMat);
   group.add(stars);
 
-  /** Lapisan rasi lebih ke depan: jarak-kamera lebih besar, titik lebih besar & lebih terang */
   const frontStarCount = quality === "high" ? 90 : 55;
   const frontGeo = new THREE.BufferGeometry();
   const frontPos = new Float32Array(frontStarCount * 3);
@@ -114,7 +112,6 @@ if (!canvas || prefersReducedMotion) {
   const frontLines = new THREE.LineSegments(frontLineGeo, frontLineMat);
   group.add(frontLines);
 
-  // Constellation lines (dynamic)
   const maxConnections = quality === "high" ? 140 : 80;
   const linePos = new Float32Array(maxConnections * 2 * 3);
   const lineGeo = new THREE.BufferGeometry();
@@ -129,7 +126,6 @@ if (!canvas || prefersReducedMotion) {
   const lines = new THREE.LineSegments(lineGeo, lineMat);
   group.add(lines);
 
-  // Slow drifting for stars to make the constellation feel alive
   const drift = new Float32Array(starCount * 2);
   for (let i = 0; i < starCount; i += 1) {
     drift[i * 2] = (Math.random() - 0.5) * (quality === "high" ? 0.12 : 0.09);
@@ -189,7 +185,6 @@ if (!canvas || prefersReducedMotion) {
     if (!isRunning) return;
     const t = clock.getElapsedTime();
 
-    // Update star positions a bit (wrap around)
     const posAttr = starGeo.getAttribute("position");
     const a = posAttr.array;
     for (let i = 0; i < starCount; i += 1) {
@@ -216,7 +211,6 @@ if (!canvas || prefersReducedMotion) {
     }
     fa.needsUpdate = true;
 
-    // Build constellation connections every few frames for performance
     frameTick += 1;
     const stride = quality === "high" ? 3 : 5;
     if (frameTick % stride === 0) {
@@ -296,7 +290,6 @@ if (!canvas || prefersReducedMotion) {
 
   animate();
 
-  // Keep colors in sync with theme toggle
   const observer = new MutationObserver(() => {
     const isLight = document.body.classList.contains("theme-light");
     starMat.opacity = isLight ? 0.28 : 0.55;
