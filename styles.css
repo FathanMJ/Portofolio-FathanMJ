@@ -56,7 +56,7 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -5;
+  z-index: -4;
   pointer-events: none;
   opacity: 0.12;
   background-image:
@@ -87,7 +87,7 @@ body::after {
 #three-canvas {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -155,6 +155,13 @@ body::after {
   border-radius: 999px;
   filter: blur(80px);
   z-index: -2;
+}
+
+header.hero,
+main,
+footer {
+  position: relative;
+  z-index: 1;
 }
 
 .bg-glow-1 {
