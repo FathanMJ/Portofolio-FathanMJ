@@ -66,6 +66,46 @@ if (!canvas || prefersReducedMotion) {
   const stars = new THREE.Points(starGeo, starMat);
   group.add(stars);
 
+  /** Lapisan rasi lebih ke depan: jarak-kamera lebih besar, titik lebih besar & lebih terang */
+  const frontStarCount = isSmallScreen ? 90 : 130;
+  const frontGeo = new THREE.BufferGeometry();
+  const frontPos = new Float32Array(frontStarCount * 3);
+  const frontDrift = new Float32Array(frontStarCount * 2);
+  for (let i = 0; i < frontStarCount; i += 1) {
+    const i3 = i * 3;
+    frontPos[i3] = (Math.random() - 0.5) * 20;
+    frontPos[i3 + 1] = (Math.random() - 0.5) * 14;
+    const rz = Math.random();
+    const zPow = rz * rz * (0.5 + Math.random() * 0.5);
+    frontPos[i3 + 2] = -0.65 - zPow * 4.2;
+    frontDrift[i * 2] = (Math.random() - 0.5) * 0.16;
+    frontDrift[i * 2 + 1] = (Math.random() - 0.5) * 0.16;
+  }
+  frontGeo.setAttribute("position", new THREE.BufferAttribute(frontPos, 3));
+  const frontStarMat = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.072,
+    transparent: true,
+    opacity: 0.94,
+    sizeAttenuation: true,
+  });
+  const frontStars = new THREE.Points(frontGeo, frontStarMat);
+  group.add(frontStars);
+
+  const maxFrontConnections = isSmallScreen ? 90 : 150;
+  const frontLinePos = new Float32Array(maxFrontConnections * 2 * 3);
+  const frontLineGeo = new THREE.BufferGeometry();
+  frontLineGeo.setAttribute("position", new THREE.BufferAttribute(frontLinePos, 3));
+  frontLineGeo.setDrawRange(0, 0);
+  const frontLineMat = new THREE.LineBasicMaterial({
+    color: 0xb8d9ff,
+    transparent: true,
+    opacity: 0.52,
+    blending: THREE.AdditiveBlending,
+  });
+  const frontLines = new THREE.LineSegments(frontLineGeo, frontLineMat);
+  group.add(frontLines);
+
   // Constellation lines (dynamic)
   const maxConnections = isSmallScreen ? 140 : 220;
   const linePos = new Float32Array(maxConnections * 2 * 3);
@@ -132,6 +172,19 @@ if (!canvas || prefersReducedMotion) {
     }
     posAttr.needsUpdate = true;
 
+    const fa = frontGeo.getAttribute("position");
+    const fArr = fa.array;
+    for (let i = 0; i < frontStarCount; i += 1) {
+      const i3 = i * 3;
+      fArr[i3] += frontDrift[i * 2] * 0.018;
+      fArr[i3 + 1] += frontDrift[i * 2 + 1] * 0.018;
+      if (fArr[i3] > 10) fArr[i3] = -10;
+      if (fArr[i3] < -10) fArr[i3] = 10;
+      if (fArr[i3 + 1] > 7) fArr[i3 + 1] = -7;
+      if (fArr[i3 + 1] < -7) fArr[i3 + 1] = 7;
+    }
+    fa.needsUpdate = true;
+
     // Build constellation connections every 2 frames for performance
     frameTick += 1;
     if (frameTick % 2 === 0) {
@@ -165,6 +218,34 @@ if (!canvas || prefersReducedMotion) {
       }
       lineGeo.setDrawRange(0, c * 2);
       lineGeo.attributes.position.needsUpdate = true;
+
+      const threshFront = isSmallScreen ? 2.2 : 2.42;
+      let cf = 0;
+      for (let i = 0; i < frontStarCount && cf < maxFrontConnections; i += 1) {
+        const i3 = i * 3;
+        const fx = fArr[i3];
+        const fy = fArr[i3 + 1];
+        const fz = fArr[i3 + 2];
+        for (let j = i + 1; j < frontStarCount && cf < maxFrontConnections; j += 1) {
+          const j3 = j * 3;
+          const gx = fArr[j3] - fx;
+          const gy = fArr[j3 + 1] - fy;
+          const gz = fArr[j3 + 2] - fz;
+          const distF = Math.sqrt(gx * gx + gy * gy + gz * gz);
+          if (distF < threshFront) {
+            const k = cf * 2 * 3;
+            frontLinePos[k] = fx;
+            frontLinePos[k + 1] = fy;
+            frontLinePos[k + 2] = fz;
+            frontLinePos[k + 3] = fArr[j3];
+            frontLinePos[k + 4] = fArr[j3 + 1];
+            frontLinePos[k + 5] = fArr[j3 + 2];
+            cf += 1;
+          }
+        }
+      }
+      frontLineGeo.setDrawRange(0, cf * 2);
+      frontLineGeo.attributes.position.needsUpdate = true;
     }
 
     group.rotation.y += 0.0018;
@@ -185,7 +266,9 @@ if (!canvas || prefersReducedMotion) {
   const observer = new MutationObserver(() => {
     const isLight = document.body.classList.contains("theme-light");
     starMat.opacity = isLight ? 0.28 : 0.55;
+    frontStarMat.opacity = isLight ? 0.45 : 0.94;
     lineMat.opacity = isLight ? 0.12 : 0.22;
+    frontLineMat.opacity = isLight ? 0.28 : 0.52;
     knotMat.emissiveIntensity = isLight ? 0.25 : 0.55;
     knotMat.color.setHex(isLight ? 0x2f6de0 : 0x9fb9ff);
   });
