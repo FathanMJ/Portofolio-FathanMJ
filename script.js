@@ -5,6 +5,7 @@ const preloader = document.getElementById("preloader");
 const cursorDot = document.querySelector(".cursor-dot");
 const cursorOutline = document.querySelector(".cursor-outline");
 const themeToggle = document.getElementById("theme-toggle");
+const starToggle = document.getElementById("star-toggle");
 const contactForm = document.getElementById("contact-form");
 const navToggle = document.getElementById("nav-toggle");
 const navLinks = document.getElementById("nav-links");
@@ -57,6 +58,24 @@ themeToggle.addEventListener("click", () => {
   body.classList.toggle("theme-light", isDark);
   themeToggle.textContent = isDark ? "☀️" : "🌙";
 });
+
+if (starToggle) {
+  const STAR_KEY = "cvStarLayer";
+  const applyStarLayer = (front) => {
+    document.body.classList.toggle("star-front", front);
+    starToggle.textContent = front ? "Rasi: Depan" : "Rasi: Belakang";
+    starToggle.setAttribute("aria-pressed", String(front));
+  };
+
+  const saved = localStorage.getItem(STAR_KEY);
+  applyStarLayer(saved === "front");
+
+  starToggle.addEventListener("click", () => {
+    const willFront = !document.body.classList.contains("star-front");
+    applyStarLayer(willFront);
+    localStorage.setItem(STAR_KEY, willFront ? "front" : "back");
+  });
+}
 
 if (navToggle && navLinks) {
   const closeMenu = () => {
