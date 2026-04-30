@@ -31,24 +31,55 @@ window.addEventListener("load", () => {
   }, 800);
 });
 
-if (window.matchMedia("(hover: hover)").matches) {
-  window.addEventListener("mousemove", (event) => {
-    anime({
-      targets: cursorDot,
-      left: event.clientX,
-      top: event.clientY,
-      duration: 100,
-      easing: "linear",
+if (cursorDot && cursorOutline) {
+  const canHover = window.matchMedia("(hover: hover)").matches;
+  if (canHover) {
+    document.body.classList.add("custom-cursor");
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let dotX = mouseX;
+    let dotY = mouseY;
+    let outlineX = mouseX;
+    let outlineY = mouseY;
+
+    cursorDot.style.opacity = "0";
+    cursorOutline.style.opacity = "0";
+
+    window.addEventListener(
+      "mousemove",
+      (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+        cursorDot.style.opacity = "1";
+        cursorOutline.style.opacity = "1";
+      },
+      { passive: true }
+    );
+
+    window.addEventListener("mouseleave", () => {
+      cursorDot.style.opacity = "0";
+      cursorOutline.style.opacity = "0";
     });
 
-    anime({
-      targets: cursorOutline,
-      left: event.clientX,
-      top: event.clientY,
-      duration: 300,
-      easing: "easeOutQuad",
-    });
-  });
+    function cursorLoop() {
+      dotX += (mouseX - dotX) * 0.75;
+      dotY += (mouseY - dotY) * 0.75;
+      outlineX += (mouseX - outlineX) * 0.18;
+      outlineY += (mouseY - outlineY) * 0.18;
+
+      cursorDot.style.left = `${dotX}px`;
+      cursorDot.style.top = `${dotY}px`;
+      cursorOutline.style.left = `${outlineX}px`;
+      cursorOutline.style.top = `${outlineY}px`;
+
+      requestAnimationFrame(cursorLoop);
+    }
+
+    requestAnimationFrame(cursorLoop);
+  } else {
+    document.body.classList.remove("custom-cursor");
+  }
 }
 
 themeToggle.addEventListener("click", () => {
