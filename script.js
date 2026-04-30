@@ -92,19 +92,46 @@ themeToggle.addEventListener("click", () => {
 
 if (starToggle) {
   const STAR_KEY = "cvStarLayer";
-  const applyStarLayer = (front) => {
-    document.body.classList.toggle("star-front", front);
-    starToggle.textContent = front ? "Rasi: Depan" : "Rasi: Belakang";
-    starToggle.setAttribute("aria-pressed", String(front));
+  const applyStarMode = (mode) => {
+    const isFront = mode === "front";
+    const isOff = mode === "off";
+    document.body.classList.toggle("star-front", isFront);
+    document.body.classList.toggle("star-off", isOff);
+
+    const label = mode === "front" ? "Rasi: Depan" : mode === "off" ? "Rasi: Mati" : "Rasi: Belakang";
+    starToggle.textContent = label;
+    starToggle.setAttribute("aria-pressed", String(isFront));
   };
 
-  const saved = localStorage.getItem(STAR_KEY);
-  applyStarLayer(saved === "front");
+  const safeGet = () => {
+    try {
+      return localStorage.getItem(STAR_KEY);
+    } catch {
+      return null;
+    }
+  };
+  const safeSet = (value) => {
+    try {
+      localStorage.setItem(STAR_KEY, value);
+    } catch {
+      // ignore storage errors (e.g., restricted contexts)
+    }
+  };
+
+  const saved = safeGet();
+  const initialMode = saved === "front" || saved === "off" || saved === "back" ? saved : "back";
+  applyStarMode(initialMode);
 
   starToggle.addEventListener("click", () => {
-    const willFront = !document.body.classList.contains("star-front");
-    applyStarLayer(willFront);
-    localStorage.setItem(STAR_KEY, willFront ? "front" : "back");
+    const current = document.body.classList.contains("star-off")
+      ? "off"
+      : document.body.classList.contains("star-front")
+        ? "front"
+        : "back";
+
+    const next = current === "back" ? "front" : current === "front" ? "off" : "back";
+    applyStarMode(next);
+    safeSet(next);
   });
 }
 

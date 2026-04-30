@@ -94,11 +94,18 @@ body::after {
   z-index: 0;
   pointer-events: none;
   mix-blend-mode: normal;
+  opacity: 0.35;
 }
 
 body.star-front #three-canvas {
   z-index: 5;
   mix-blend-mode: screen;
+  opacity: 1;
+}
+
+body.star-off #three-canvas {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .preloader {
