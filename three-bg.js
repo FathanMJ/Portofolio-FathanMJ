@@ -37,23 +37,6 @@ if (!canvas || prefersReducedMotion) {
   const amb = new THREE.AmbientLight(0xffffff, 0.25);
   scene.add(amb);
 
-  // 3D object is the heaviest part; keep it only on high quality
-  let knot = null;
-  let knotMat = null;
-  if (quality === "high") {
-    const knotGeo = new THREE.TorusKnotGeometry(1.25, 0.42, 120, 12);
-    knotMat = new THREE.MeshStandardMaterial({
-      color: 0x9fb9ff,
-      roughness: 0.38,
-      metalness: 0.72,
-      emissive: 0x0b1a3d,
-      emissiveIntensity: 0.55,
-    });
-    knot = new THREE.Mesh(knotGeo, knotMat);
-    knot.position.set(2.6, 1.2, -1.2);
-    group.add(knot);
-  }
-
   const starCount = quality === "high" ? 240 : 140;
   const starGeo = new THREE.BufferGeometry();
   const starPos = new Float32Array(starCount * 3);
@@ -280,12 +263,6 @@ if (!canvas || prefersReducedMotion) {
     group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, targetY, 0.05);
     group.rotation.y = THREE.MathUtils.lerp(group.rotation.y, t * 0.08 + targetX, 0.03);
 
-    if (knot) {
-      knot.rotation.x = t * 0.25;
-      knot.rotation.y = t * 0.33;
-      knot.rotation.z = t * 0.18;
-    }
-
     renderer.render(scene, camera);
     rafId = requestAnimationFrame(animate);
   }
@@ -298,10 +275,6 @@ if (!canvas || prefersReducedMotion) {
     frontStarMat.opacity = isLight ? 0.45 : 0.94;
     lineMat.opacity = isLight ? 0.12 : 0.22;
     frontLineMat.opacity = isLight ? 0.28 : 0.52;
-    if (knotMat) {
-      knotMat.emissiveIntensity = isLight ? 0.25 : 0.55;
-      knotMat.color.setHex(isLight ? 0x2f6de0 : 0x9fb9ff);
-    }
   });
   observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 }
