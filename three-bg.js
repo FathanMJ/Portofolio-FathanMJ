@@ -160,9 +160,13 @@ if (!canvas || prefersReducedMotion) {
     }
   }
 
-  document.addEventListener("visibilitychange", () => {
-    setRunning(!document.hidden);
-  });
+  function syncRunState() {
+    const starOff = document.body.classList.contains("star-off");
+    canvas.style.display = starOff ? "none" : "";
+    setRunning(!document.hidden && !starOff);
+  }
+
+  document.addEventListener("visibilitychange", syncRunState);
 
   function animate() {
     if (!isRunning) return;
@@ -275,7 +279,11 @@ if (!canvas || prefersReducedMotion) {
     frontStarMat.opacity = isLight ? 0.45 : 0.94;
     lineMat.opacity = isLight ? 0.12 : 0.22;
     frontLineMat.opacity = isLight ? 0.28 : 0.52;
+    syncRunState();
   });
   observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+
+  // Initial sync (in case stored state is star-off)
+  syncRunState();
 }
 
